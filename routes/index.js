@@ -14,7 +14,7 @@ const { auth: { authorizationMiddleware, validationMiddleware } } = require('../
 // 登录接口
 router.get('/login', authorizationMiddleware, controllers.login)
 // 用户信息接口（可以用来验证登录态）
-router.get('/user', validationMiddleware, controllers.user)
+router.get('/users', controllers.user)//, validationMiddleware
 
 // --- 图片上传 Demo --- //
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
@@ -32,8 +32,17 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 
+<<<<<<< HEAD
 router.get('/test', (ctx) => {
   ctx.state.data = { ok: true };
 });
+=======
+// test
+router.get('/dishes',controllers.dishes)
+
+router.get('/images/recommendation',controllers.images)
+
+router.post('/orders', controllers.createOrders)
+>>>>>>> 5-20
 
 module.exports = router
