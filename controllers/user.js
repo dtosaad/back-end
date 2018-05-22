@@ -1,4 +1,4 @@
-search = require('./search.js')
+qeury = require('./query.js')
 
 module.exports = async (ctx, next) => {
     // 通过 Koa 中间件进行登录态校验之后
@@ -15,7 +15,7 @@ module.exports = async (ctx, next) => {
 			queryObj.key = 'user_id'
 			queryObj.keyValue = userid
 			var querystring
-			var results = await search.search(ctx,next,querystring, queryObj)
+			var results = await query.query(ctx,next,querystring, queryObj)
 			ctx.body = results
         }catch(e){
         	ctx.body=e.message

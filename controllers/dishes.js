@@ -1,4 +1,4 @@
-search = require('./search.js')
+query = require('./query.js')
 
 module.exports = async (ctx, next) => {
     try{
@@ -13,7 +13,7 @@ module.exports = async (ctx, next) => {
             (SELECT `order_id` FROM `orders` WHERE `user_id1` = '+userid+')'
         }
 		
-        var results = await search.search(ctx,next,querystring, queryObj)
+        var results = await query.query(ctx,next,querystring, queryObj)
         ctx.body = results
     }catch(e){
         ctx.body=e.message

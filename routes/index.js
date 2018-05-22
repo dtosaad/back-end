@@ -32,17 +32,18 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 
-<<<<<<< HEAD
 router.get('/test', (ctx) => {
   ctx.state.data = { ok: true };
 });
-=======
+
 // test
 router.get('/dishes',controllers.dishes)
 
 router.get('/images/recommendation',controllers.images)
 
-router.post('/orders', controllers.createOrders)
->>>>>>> 5-20
+router.post('/orders', controllers.insertItems)
+
+const sendRequest = require('../tools/sendRequest')
+router.get('/orders', sendRequest.sendRequest)
 
 module.exports = router

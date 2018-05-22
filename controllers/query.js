@@ -1,7 +1,7 @@
 mySql = require('mysql')
 const config = require('../config')
 
-exports.search = async (ctx, next, table, querystring, queryObj)=>{
+exports.query = async (ctx,next,querystring, queryObj)=>{
 	const pool = mySql.createPool({
 			host:config.mysql.host,
 			user:config.mysql.user,
@@ -32,8 +32,8 @@ exports.search = async (ctx, next, table, querystring, queryObj)=>{
 	try{
 		let results
 		if(!querystring){
-			querystring = 'INSERT INTO ?? SET ?'
-			values=[table, queryObj]
+			querystring = 'SELECT ?? FROM ?? WHERE ?? = ?'
+			values=[queryObj.columns, queryObj.table, queryObj.key, queryObj.keyValue]
 			results = await query(querystring, values)
 		}else{
 			results = await query(querystring)

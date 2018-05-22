@@ -1,17 +1,18 @@
 const request = require('request')
 
-module.exports = async (ctx, next)=>{
+exports.sendRequest = async (ctx, next)=>{
 	var data={
-  		"dished": [
-    		{
-      			"dishid": 1,
-      			"name": "蛋炒饭",
+		"user_id":15333333,
+  		"dishes": [
+  			{
+      			"dish_id": 1,
+      			"dish_name": "蛋炒饭",
       			"price": 10.00,
       			"amount": 2
-    		}
+  			}
   		],
   		"people_count": 2,
-  		"eating_mode": 1,
+  		"dinning_choice": 1,
   		"note": "不要辣",
   		"takeout_info": {
     		"name": "偷外卖死全家",
@@ -30,7 +31,6 @@ module.exports = async (ctx, next)=>{
 	},function(error,response,body){
 		if(error){
 			console.log(error.message)
-
 		}
 	})
 }
