@@ -9,7 +9,7 @@ module.exports = async (ctx, next) => {
             queryObj = {}
             querystring = 'SELECT `*` FROM dishes'
         }else{
-            querystring = 'SELECT `dish_id`,`amount` FROM `order_record` WHERE `order_id` IN \
+            querystring = 'SELECT `dish_id`,`dish_name`,`amount` FROM `order_record` WHERE `order_id` IN \
             (SELECT `order_id` FROM `orders` WHERE `user_id1` = '+userid+')'
         }
 		

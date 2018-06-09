@@ -1,7 +1,7 @@
 mySql = require('mysql')
 const config = require('../config')
 
-exports.query = async (ctx,next,querystring, queryObj)=>{
+exports.query = async (ctx, next, querystring, queryObj)=>{
 	const pool = mySql.createPool({
 			host:config.mysql.host,
 			user:config.mysql.user,

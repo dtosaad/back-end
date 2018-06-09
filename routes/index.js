@@ -14,7 +14,7 @@ const { auth: { authorizationMiddleware, validationMiddleware } } = require('../
 // 登录接口
 router.get('/login', authorizationMiddleware, controllers.login)
 // 用户信息接口（可以用来验证登录态）
-router.get('/users', controllers.user)//, validationMiddleware
+router.get('/users', controllers.user)//validationMiddleware, 
 
 // --- 图片上传 Demo --- //
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
@@ -42,8 +42,27 @@ router.get('/dishes',controllers.dishes)
 router.get('/images/recommendation',controllers.images)
 
 router.post('/orders', controllers.insertItems)
-
 const sendRequest = require('../tools/sendRequest')
 router.get('/orders', sendRequest.sendRequest)
 
+router.post('/users/signin',controllers.getUserid)
+const sendCode = require('../tools/sendCode')
+router.get('/users/signin',sendCode.sendCode)
+
+//API 2.1
+router.get('/tables/:table_id',controllers.queryTable)
+
+router.post('/tables/:table_id/together', controllers.orderTogether)
+const oTtrigger = require('../tools/orderTogetherTrigger')
+router.get('/tables/:table_id/together', oTtrigger.trigger)
+
+// API 2.2
+router.post('/tables/:table_id/dishes', controllers.updateDish)
+const updateDishTrigger = require('../tools/updateDishTrigger')
+router.get('/tables/:table_id/dishes', updateDishTrigger) //controllers.queryOrders
+
+// API 2.4
+router.post('/orders/together', controllers.commitOrders)
+const commitTrigger = require('../tools/commitTrigger')
+router.get('/orders/together', commitTrigger)
 module.exports = router
