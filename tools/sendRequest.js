@@ -2,13 +2,19 @@ const request = require('request')
 
 exports.sendRequest = async (ctx, next)=>{
 	var data={
-		"user_id":15333333,
+		"user_id":15333334,
   		"dishes": [
   			{
       			"dish_id": 1,
       			"dish_name": "蛋炒饭",
       			"price": 10.00,
       			"amount": 2
+  			},
+  			{
+      			"dish_id": 2,
+      			"dish_name": "炒粉",
+      			"price": 10.00,
+      			"amount": 3
   			}
   		],
   		"people_count": 2,

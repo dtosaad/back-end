@@ -4,7 +4,7 @@ module.exports = async (ctx, next)=>{
 	queryObj = {}
 
 	for(var i = 0; i < info.dishes.length; ++i){
-		var dish = info.dishes[0]
+		var dish = info.dishes[i]
 		dish_id = dish.dish_id
 		amount = dish.amount
 		//update dishes
