@@ -43,6 +43,13 @@ router.get('/images/recommendation',controllers.images)
 
 router.post('/orders', controllers.insertItems)
 
+router.get('/hello',controllers.hello)
+
+router.get('/tables',controllers.getAllTables)
+
+router.post('/tables/:table_id/reservation',controllers.reservation)
+
+router.delete('/tables/:table_id/reservation',controllers.cancelRes)
 const sendRequest = require('../tools/sendRequest')
 router.get('/orders', sendRequest.sendRequest)
 
