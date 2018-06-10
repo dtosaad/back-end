@@ -21,7 +21,7 @@
     "lodash": "^4.17.10",
     "mkdir-p": "0.0.7",
     "mysql": "^2.15.0",
-    "nodemon": "^1.17.4",
+    "nodemon": "^1.17.5",
     "object-assign": "^4.1.1",
     "pify": "^2.3.0",
     "request": "^2.86.0",

@@ -20,8 +20,8 @@ const CONF = {
         host: 'localhost',
         port: 3306,
         user: 'root',
-        db: 'sysu-canteen0',
-        pass: '15331427',
+        db: 'sysucanteen0',
+        pass: '15331430',
         char: 'utf8mb4'
     },
 
