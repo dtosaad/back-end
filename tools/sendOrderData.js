@@ -1,6 +1,6 @@
 const request = require('request')
 
-exports.sendRequest = async (ctx, next)=>{
+module.exports = async (ctx, next)=>{
 	var data={
 		"user_id":15333334,
   		"dishes": [
@@ -14,7 +14,7 @@ exports.sendRequest = async (ctx, next)=>{
       			"dish_id": 2,
       			"dish_name": "炒粉",
       			"price": 10.00,
-      			"amount": 3
+      			"amount": 2
   			}
   		],
   		"people_count": 2,
@@ -24,7 +24,8 @@ exports.sendRequest = async (ctx, next)=>{
     		"name": "偷外卖死全家",
     		"phone": 15521221390,
     		"location": "中山大学东校区慎思园 6 号"
-  		}
+  		},
+      "discount_id":1
 	}
 	request({
 		url:'http://localhost:5757/weapp/orders',
@@ -33,8 +34,9 @@ exports.sendRequest = async (ctx, next)=>{
 		headers:{
 			'content-type':'application/json'
 		},
-		body:data
+		body:data//JSON.stringify(data)
 	},function(error,response,body){
+console.log('\n\ndata: ',data,'\n\n')
 		if(error){
 			console.log(error.message)
 		}

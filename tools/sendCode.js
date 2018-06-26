@@ -2,7 +2,7 @@ const request = require('request')
 
 exports.sendCode = async (ctx,next)=>{
 	var data={
-		"code":"somecode",
+		"code":"023QewHC1Rho440w73LC1vjiHC1QewHr",
 		"wechat_name":"xxx",
 		"wechat_avatar":"xxx"
 	}
@@ -13,7 +13,7 @@ exports.sendCode = async (ctx,next)=>{
 		headers:{
 			'content-type':'application/json'
 		},
-		body:JSON.stringify(data)
+		body:data//JSON.stringify(data)
 	},function(error,response,dody){
 		if(error){
 			console.log(error.message)

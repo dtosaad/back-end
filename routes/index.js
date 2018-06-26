@@ -13,8 +13,7 @@ const { auth: { authorizationMiddleware, validationMiddleware } } = require('../
 // --- 登录与授权 Demo --- //
 // 登录接口
 router.get('/login', authorizationMiddleware, controllers.login)
-// 用户信息接口（可以用来验证登录态）
-router.get('/users', controllers.user)//validationMiddleware, 
+ 
 
 // --- 图片上传 Demo --- //
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
@@ -32,40 +31,37 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 
-router.get('/test', (ctx) => {
-  ctx.state.data = { ok: true };
-});
-
-// test
-router.get('/dishes',controllers.dishes)
-
-router.get('/images/recommendation',controllers.images)
-
-router.post('/orders', controllers.insertItems)
-
-router.get('/hello',controllers.hello)
-
-router.get('/tables',controllers.getAllTables)
-
-router.post('/tables/:table_id/reservation',controllers.reservation)
-
-router.delete('/tables/:table_id/reservation',controllers.cancelRes)
-
-const sendRequest = require('../tools/sendRequest')
-router.get('/orders', sendRequest.sendRequest)
-
+/*=========== APIs ===========*/
+// API 1.1,用户登录
 router.post('/users/signin',controllers.getUserid)
 const sendCode = require('../tools/sendCode')
 router.get('/users/signin',sendCode.sendCode)
 
-//API 2.1
+// API 1.2, 获取用户信息
+router.get('/users/:userid', controllers.getUserInfo)
+
+// API 1.3、1.4，获取所有菜品列表、获取用户吃过的菜品列表
+router.get('/dishes',controllers.dishes)
+
+// API 1.5， 获取每日推荐的图片链接
+router.get('/images/recommendation',controllers.images)
+
+// API 1.6,  新建订单
+router.post('/orders', controllers.addNewOrder)
+const sendOrderData = require('../tools/sendOrderData')
+router.get('/orders',sendOrderData)
+
+// API 2.1， 获取桌子信息
+router.get('/tables',controllers.getAllTables)
+//API 2.1， 获取桌子信息
 router.get('/tables/:table_id',controllers.queryTable)
 
+// API2.1 确认参与协同点餐
 router.post('/tables/:table_id/together', controllers.orderTogether)
 const oTtrigger = require('../tools/orderTogetherTrigger')
 router.get('/tables/:table_id/together', oTtrigger.trigger)
 
-// API 2.2
+// API 2.2， 上传当前已点的菜品
 router.post('/tables/:table_id/dishes', controllers.updateDish)
 const updateDishTrigger = require('../tools/updateDishTrigger')
 router.get('/tables/:table_id/dishes', updateDishTrigger) //controllers.queryOrders
@@ -74,4 +70,18 @@ router.get('/tables/:table_id/dishes', updateDishTrigger) //controllers.queryOrd
 router.post('/orders/together', controllers.commitOrders)
 const commitTrigger = require('../tools/commitTrigger')
 router.get('/orders/together', commitTrigger)
+
+// API 3.2， 预定桌位
+router.post('/tables/:table_id/reservation',controllers.reservation)
+
+// API 3.2 取消预订
+router.delete('/tables/:table_id/reservation',controllers.cancelRes)
+
+//API 4.3.1 获取用户当前的抵用券
+router.get('/discounts', controllers.getDiscount)
+
+// API 4.3.2，使用抵用券，修改API 1.6
+
+// API4.4 外卖
+
 module.exports = router
