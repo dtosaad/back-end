@@ -14,12 +14,17 @@ module.exports = async (ctx, next) => {
 				sql1 = 'SELECT `user_id` FROM `table` WHERE `table_id` ='+table_id
 				var result1 = await query.query(ctx,next,sql1,queryObj)
 				user_id0 = result1[0].user_id
-				if (!user_id) {
-				sq12 = 'UPDATE `table` SET `user_id` = '+user_id+' WHERE `table_id` ='+table_id
+				if (!user_id0) {
+				sq12 = 'UPDATE `table` SET `user_id` = \''+user_id+'\' WHERE `table_id` ='+table_id
 				await query.query(ctx,next,sql2,queryObj)
+				sql3 = 'CREATE EVENT event_0 \
+				        ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 15 MINUTE \
+						DO \
+						    UPDATE `table` SET `user_id` = NULL WHERE `table_id` ='+table_id
 				} else {
 					throw new Error('table reserved or being used!')
 				}
+				await query.query(ctx,next,sql3,queryObj)
 			}
         }catch(e){
         	ctx.body=e.message

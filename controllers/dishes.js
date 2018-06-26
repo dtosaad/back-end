@@ -10,7 +10,7 @@ module.exports = async (ctx, next) => {
             querystring = 'SELECT `*` FROM dishes'
         }else{
             querystring = 'SELECT * FROM (SELECT `dish_id`,sum(`amount`) as `user_ordered_count` FROM `order_record` WHERE `order_id` IN \
-            (SELECT `order_id` FROM `orders` WHERE `user_id1` = '+userid+') \
+            (SELECT `order_id` FROM `orders` WHERE `user_id1` = \''+userid+'\') \
 			GROUP BY `dish_id`) as tmp1\
 			LEFT JOIN \
 			(SELECT `dish_id`,`dish_name` as `name` FROM `dishes`) as tmp2 ON tmp1.`dish_id` = tmp2.`dish_id`'
