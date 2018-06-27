@@ -77,6 +77,11 @@ router.post('/tables/:table_id/reservation',controllers.reservation)
 // API 3.2 取消预订
 router.delete('/tables/:table_id/reservation',controllers.cancelRes)
 
+//API 4.1 菜品反馈
+router.post('/dishes/:dish_id/review',controllers.review)
+
+//API 4.2 菜品推荐
+
 //API 4.3.1 获取用户当前的抵用券
 router.get('/discounts', controllers.getDiscount)
 
