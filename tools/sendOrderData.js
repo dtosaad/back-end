@@ -2,7 +2,7 @@ const request = require('request')
 
 module.exports = async (ctx, next)=>{
 	var data={
-		"user_id":15333334,
+		  "user_id":15333334,
   		"dishes": [
   			{
       			"dish_id": 1,
@@ -36,7 +36,6 @@ module.exports = async (ctx, next)=>{
 		},
 		body:data//JSON.stringify(data)
 	},function(error,response,body){
-console.log('\n\ndata: ',data,'\n\n')
 		if(error){
 			console.log(error.message)
 		}

@@ -9,14 +9,14 @@ module.exports = async (ctx, next) => {
 		var queryObj = {}
 		var queryString
 		if (!table_id) {
-			queryString = 'SELECT `*` FROM table'
+			queryString = 'SELECT `*` FROM distribution'
 		} else {
 		    queryObj.columns = ['table_id','number','user_id','user_avatar']
-			queryObj.table = 'table'
+			queryObj.table = 'distribution'
 			queryObj.key = 'table_id'
 			queryObj.keyValue = userid
 		}
-		var results = await query.query(ctx,next,querystring, queryObj)
+		var results = await query.query(ctx,next,queryString, queryObj)
         ctx.body = results
         }catch(e){
         	ctx.body=e.message
