@@ -21,10 +21,10 @@ module.exports = async (ctx, next) => {
 				        ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 15 MINUTE \
 						DO \
 						    UPDATE `table` SET `user_id` = NULL WHERE `table_id` ='+table_id
+				await query.query(ctx,next,sql3,queryObj)
 				} else {
 					throw new Error('table reserved or being used!')
 				}
-				await query.query(ctx,next,sql3,queryObj)
 			}
         }catch(e){
         	ctx.body=e.message
