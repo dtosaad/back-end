@@ -10,14 +10,14 @@ module.exports = async(ctx, next) =>{
 		queryObj = {}
 		queryObj.columns = ['orderers_count']
 		queryObj.table = 'distribution'
-		queryObj.key = 'user_id2'
+		queryObj.key = 'user_id'
 		queryObj.keyValue = user_id
 		var orderers_counts = await query.query(ctx, next, '', queryObj)
 		if(!orderers_counts){
 			throw new Error('no orderers')
 		}
 		var orderers_count = orderers_counts[0].orderers_count - 1
-		sql_update_orderers_count = 'UPDATE `distribution` SET `orderers_count`='+orderers_count+' WHERE `user_id2`=' + user_id
+		sql_update_orderers_count = 'UPDATE `distribution` SET `orderers_count`='+orderers_count+' WHERE `user_id`=' + user_id
 	}catch(e){
 		ctx.body = e.message
 	}

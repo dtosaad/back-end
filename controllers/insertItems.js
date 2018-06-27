@@ -20,7 +20,7 @@ module.exports = async (ctx, next)=>{
 	dinning_choice = info.dinning_choice
 
 	//update orders
-	sql4 = 'INSERT INTO `orders` (`user_id1`, `dinning_choice`) VALUES ('+user_id+', '+dinning_choice+')'
+	sql4 = 'INSERT INTO `orders` (`user_id`, `dinning_choice`) VALUES ('+user_id+', '+dinning_choice+')'
 	results = await query.query(ctx, next,sql4, queryObj)
 	order_id = results.insertId
 	
