@@ -23,15 +23,12 @@ module.exports = async (ctx, next)=>{
 	//update users(if needed)
 	takeout_info = info.takeout_info
 	if(takeout_info){
-		console.log('\ntakeoutinfo:',takeout_info,'\n')
 		queryObj = {}
 		queryObj.table = 'users'
 		queryObj.columns = ['wechat_name','phone','location']
 		queryObj.key = 'user_id'
 		queryObj.keyValue = user_id
-		console.log('\nuser_id:',user_id,'\n')
 		user_info = await query.query(ctx, next, '', queryObj)
-		console.log('\nuser_info:',user_info,'\n')
 		wechat_name = !user_info[0].wechat_name?takeout_info.name:user_info[0].wechat_name
 		phone = !user_info[0].phone?takeout_info.phone:user_info[0].phone
 		location = !user_info[0].location?takeout_info.location:user_info[0].location
@@ -48,23 +45,19 @@ module.exports = async (ctx, next)=>{
 		queryObj.columns=['money','amount']
 		queryObj.key='discount_id'
 		queryObj.keyValue=info.discount_id
-		console.log('\ndiscount_id:',info.discount_id)
 		discount_info = await query.query(ctx, next, '', queryObj)
-		console.log('\ndiscount_info:',discount_info)
 		discount_value = discount_info[0].money
 		discount_amount = discount_info[0].amount
 		total_price -= discount_value
 
 		//delete discount
 		--discount_amount
-		console.log('dscount_amount:',discount_amount)
 		sql = ''
 		if(discount_amount<=0){
 			sql = 'DELETE FROM `coupon` WHERE `discount_id`=\''+info.discount_id+'\''
 		}else{
 			sql = 'UPDATE `coupon` SET `amount`= \''+discount_amount+'\' WHERE `discount_id`=\''+info.discount_id+'\''
 		}
-		console.log('sql_coupon:',sql)
 		await query.query(ctx, next, sql, {})
 	}
 

@@ -9,7 +9,6 @@ module.exports = async (ctx, next) => {
             queryObj = {}
             querystring = 'SELECT `*` FROM dishes'
         }else{
-console.log('userid:',userid)
             querystring = 'SELECT * FROM (SELECT `dish_id`,sum(`amount`) as `user_ordered_count` FROM `order_record` WHERE `order_id` IN \
             (SELECT `order_id` FROM `orders` WHERE `user_id` = '+userid+') GROUP BY `dish_id`) as tmp1\
 			LEFT JOIN \
