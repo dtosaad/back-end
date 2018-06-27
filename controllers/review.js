@@ -4,7 +4,7 @@ module.exports = async (ctx, next)=>{
 	star = info.star
 	queryObj = {}
     try{
-        	dish_id = ctx.request.query.dish_id
+        	dish_id = ctx.params.dish_id
 			user_id = ctx.request.query.user_id
 			if(!dish_id){
 				throw new Error('dish_id needed!')
