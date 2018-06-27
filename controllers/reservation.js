@@ -6,9 +6,10 @@ module.exports = async (ctx, next) => {
     // 具体查看：
 	queryObj = {}
     try{
-        	table_id = ctx.request.query.table_id
+            table_id = ctx.params.table_id
 			user_id = ctx.request.query.user_id
 			if(!table_id){
+			    ctx.body="fail"
 				throw new Error('table_id needed!')
 			} else {
 				sql1 = 'SELECT `user_id2` FROM `distribution` WHERE `table_id` ='+table_id
@@ -25,9 +26,9 @@ module.exports = async (ctx, next) => {
 				} else {
 					throw new Error('table reserved or being used!')
 				}
+				ctx.body = "success"
 			}
         }catch(e){
         	ctx.body=e.message
         }
-
 }
