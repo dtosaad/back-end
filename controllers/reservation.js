@@ -1,4 +1,5 @@
 query = require('./query.js')
+
 module.exports = async (ctx, next) => {
     // 通过 Koa 中间件进行登录态校验之后
     // 登录信息会被存储到 ctx.state.$wxInfo
@@ -6,6 +7,9 @@ module.exports = async (ctx, next) => {
 	queryObj = {}
     try {
       table_id = ctx.params.table_id
+	  queryObj = {}
+    try{
+        	table_id = ctx.params.table_id
 			user_id = ctx.request.query.user_id
       console.log('table_id:', table_id)
       console.log('user_id:', user_id)
@@ -28,6 +32,21 @@ module.exports = async (ctx, next) => {
             console.log(sql3,table_id,query.query)
             await query.query(ctx,next,sql3,{})
           },900000)        
+          			sql_tmp = 'SELECT `wechat_avatar` FROM `users` WHERE `user_id` ='+user_id
+          			var result2 = await query.query(ctx,next,sql_tmp,queryObj)
+          			user_avatar = result2[0].wechat_avatar
+          			sql2 = 'UPDATE `distribution` SET `user_id` = ' + user_id + ',`orderers_count` = 1, `user_avatar` = \'' + user_avatar + '\ \
+                		WHERE `table_id` ='+table_id
+				  	await query.query(ctx,next,sql2,queryObj)
+          			setTimeout(function(){
+            			sql3 = 'UPDATE `distribution` SET `user_id` = NULL WHERE `table_id` =' + table_id
+            			await sql.query(sql3).then(function (result) {
+              				console.log(result);
+              				return result;
+            			}, function (error) {
+              				return -1;
+            			})
+          			},900000)    
 				} else {
 					throw new Error('table reserved or being used!')
 				}
@@ -35,5 +54,8 @@ module.exports = async (ctx, next) => {
     }catch(e){
       ctx.body=e.message
     }
+        }catch(e){
+        	ctx.body=e.message
+        }
 
 }
