@@ -10,13 +10,23 @@ module.exports = async (ctx, next) => {
 			user_id = ctx.request.query.user_id
 			if(!table_id){
 				throw new Error('table_id needed!')
+        console.log('table_id:',table_id)
 			} else {
-				sql1 = 'SELECT `user_id` FROM `table` WHERE `table_id` ='+table_id
+				sql1 = 'SELECT `user_id` FROM `distribution` WHERE `table_id` ='+table_id
 				var result1 = await query.query(ctx,next,sql1,queryObj)
 				user_id0 = result1[0].user_id
 				if (!user_id0) {
-				sq12 = 'UPDATE `table` SET `user_id` = '+user_id+' WHERE `table_id` ='+table_id
+          sql_tmp = 'SELECT `wechat_avatar` FROM `users` WHERE `user_id` ='+user_id
+          var result2 = await query.query(ctx,next,sql_tmp,queryObj)
+          user_avatar = result2[0].wechat_avatar
+          sql2 = 'UPDATE `distribution` SET `user_id` = ' + user_id + ',`orderers_count` = 1, `user_avatar` = \'' + user_avatar + '\ \
+                WHERE `table_id` ='+table_id
 				await query.query(ctx,next,sql2,queryObj)
+          setTimeout(function(){
+            sql3 = 'UPDATE `distribution` SET `user_id` = NULL WHERE `table_id` =' + table_id
+            await query.query(ctx, next, sql3, queryObj) 
+          },900000)
+                  
 				} else {
 					throw new Error('table reserved or being used!')
 				}
