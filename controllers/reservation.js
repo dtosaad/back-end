@@ -21,11 +21,11 @@ module.exports = async (ctx, next) => {
           user_avatar = result2[0].wechat_avatar
           sql2 = 'UPDATE `distribution` SET `user_id` = ' + user_id + ',`orderers_count` = 1, `user_avatar` = \'' + user_avatar + '\ \
                 WHERE `table_id` ='+table_id
-				await query.query(ctx,next,sql2,queryObj)
-          setTimeout(function(){
+				  await query.query(ctx,next,sql2,queryObj)
+          /*setTimeout(function(){
             sql3 = 'UPDATE `distribution` SET `user_id` = NULL WHERE `table_id` =' + table_id
-            await query.query(ctx, next, sql3, queryObj) 
-          },900000)
+            await query.query(ctx, next, sql3, {}) 
+          },900000)*/
                   
 				} else {
 					throw new Error('table reserved or being used!')
