@@ -11,8 +11,9 @@ module.exports = async(ctx, next)=>{
 		queryObj.table = 'coupon'
 		queryObj.key = 'user_id'
 		queryObj.keyValue = user_id
-		var discount_info = await query.query(ctx, next, '', queryObj)
-		return discount_info
+		sql = 'SELECT `discount_id`,`money` FROM `coupon` WHERE `user_id` = ' + user_id
+		var discount_info = await query.query(ctx, next, sql, {})
+		ctx.body = discount_info
 	}catch (e){
 		console.log(e.message)
 	}

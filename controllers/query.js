@@ -34,10 +34,13 @@ exports.query = async (ctx, next, querystring, queryObj)=>{
 		if(!querystring){
 			querystring = 'SELECT ?? FROM ?? WHERE ?? = ?'
 			values=[queryObj.columns, queryObj.table, queryObj.key, queryObj.keyValue]
+console.log('query.js values:\n',values)
 			results = await query(querystring, values)
+console.log('query.js query results:\n',results)
 		}else{
 console.log('query.js querystring:\n',querystring)
 			results = await query(querystring)
+
 console.log('query.js query results:\n',results)
 		}
 		return results

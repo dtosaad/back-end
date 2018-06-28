@@ -67,10 +67,18 @@ module.exports = async (ctx, next)=>{
 	results = await query.query(ctx, next,sql4, {})
 	order_id = results.insertId
 	
-	// update order_record (order_id, dish_id,amount)
-	sql5 = 'INSERT INTO `order_record` (`order_id`, `dish_id`, `amount`) VALUES (\''
-		+order_id+'\', \''+dish_id+'\', \''+info.people_count+'\')'
-	await query.query(ctx, next,sql5, {})
+	for(var i = 0; i < info.dishes.length; ++i){
+		var dish = info.dishes[i]
+		dish_id = dish.dish_id
+		amount = dish.amount
+		
+		// insert into order_record (order_id, dish_id, amount)
+		sql_insert_order_record = 'INSERT INTO `order_record` (`order_id`, `dish_id`, `amount`) VALUES (\''
+			+ order_id + '\', \'' + dish_id + '\', \'' + amount + '\')'
+
+		await query.query(ctx, next, sql_insert_order_record, {})
+	}
+	
 
 	sql_delete = 'DELETE FROM `coupon` WHERE `discount_id`='+info.discount_id
 	await query.query(ctx, next, sql_delete, {})
