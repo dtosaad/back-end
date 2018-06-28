@@ -26,10 +26,7 @@ module.exports = async (ctx, next) => {
 	//console.log('\n\ntables_order_together:', tables_order_together,'\n\n')
 	result = []
 	for(let [dishid, dish] of tables_order_together.get(table_id)){
-		console.log('type of dish:',typeof(dish))
 		result.push(dish)
-		console.log('    ',dish.dish_id)
-		console.log('    ',dish.name)
 	}
 	ctx.body = result
 }

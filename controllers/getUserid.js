@@ -35,7 +35,6 @@ module.exports = async (ctx,next)=>{
         })*/
         let result = await getOpenId(appid, appsecret, code)
         var openid = JSON.parse(result.body).openid
-
         queryObj = {}
         queryObj.columns = 'user_id'
         queryObj.table = 'users'

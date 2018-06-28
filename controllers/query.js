@@ -36,7 +36,9 @@ exports.query = async (ctx, next, querystring, queryObj)=>{
 			values=[queryObj.columns, queryObj.table, queryObj.key, queryObj.keyValue]
 			results = await query(querystring, values)
 		}else{
+console.log('query.js querystring:\n',querystring)
 			results = await query(querystring)
+console.log('query.js query results:\n',results)
 		}
 		return results
 	}
@@ -44,3 +46,4 @@ exports.query = async (ctx, next, querystring, queryObj)=>{
 		ctx.response.body = e.message
 	}
 }
+
