@@ -1,5 +1,5 @@
 query = require('./query.js')
-
+const sql = require('../sql/config')
 module.exports = async (ctx, next) => {
     // 通过 Koa 中间件进行登录态校验之后
     // 登录信息会被存储到 ctx.state.$wxInfo
@@ -24,7 +24,12 @@ module.exports = async (ctx, next) => {
 				await query.query(ctx,next,sql2,queryObj)
           setTimeout(function(){
             sql3 = 'UPDATE `distribution` SET `user_id` = NULL WHERE `table_id` =' + table_id
-            await query.query(ctx, next, sql3, queryObj) 
+            await sql.query(sql3).then(function (result) {
+              console.log(result);
+              return result;
+            }, function (error) {
+              return -1;
+            })
           },900000)
                   
 				} else {
