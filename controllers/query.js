@@ -44,4 +44,3 @@ exports.query = async (ctx, next, querystring, queryObj)=>{
 		ctx.response.body = e.message
 	}
 }
-
