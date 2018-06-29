@@ -82,4 +82,33 @@ module.exports = async (ctx, next)=>{
 
 	sql_delete = 'DELETE FROM `coupon` WHERE `discount_id`='+info.discount_id
 	await query.query(ctx, next, sql_delete, {})
+
+	// add coupon
+	new_discount_money = 0
+	flag = false
+	if(total_price >= 300){
+		new_discount_money = 30
+		flag = true
+	}else if(total_price > = 200){
+		new_discount_money = 20
+		flag = true
+	}else if(total_price >= 100){
+		new_discount_money = 10
+		flag = true
+	}
+	if(flag){
+		sql_select_coupon = 'SELECT * FROM `coupon` WHERE `user_id` = \'' + user_id 
+			+ '\' AND `money` = \'' + new_discount_money + '\''
+		coupon_info = await query.query(ctx, next, sql_select_coupon, {})
+
+		sql_coupon
+		if(coupon_info[0].amount){
+			sql_coupon = 'UPDATE `coupon` SET `amount`= ' + (coupon_info[0].amount+1)
+				+ ' WHERE `discount_id`=' + coupon_info[0].discount_id
+		}else{
+			sql_coupon = 'INSERT INTO `coupon` (`user_id`, `money`,`amount`) VALUES (\''
+				+user_id+'\', \''+dinning_choice+'\', \''+total_price'\')'
+		}
+		await query.query(ctx, next, sql_coupon, {})
+	}
 }

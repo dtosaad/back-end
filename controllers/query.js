@@ -2,25 +2,13 @@ mySql = require('mysql')
 const config = require('../config')
 
 exports.query = async (ctx, next, querystring, queryObj)=>{
-const pool = mySql.createPool({
-		host:config.mysql.host,
-		user:config.mysql.user,
-		password:config.mysql.pass,
-		database:config.mysql.db
-})
-  pool.getConnection(function (err, connection) {
-    // Use the connection
-    connection.query('SELECT something FROM sometable', function (error, results, fields) {
-      // And done with the connection.
-      connection.release();
+	const pool = mySql.createPool({
+			host:config.mysql.host,
+			user:config.mysql.user,
+			password:config.mysql.pass,
+			database:config.mysql.db
+		})
 
-      // Handle error after the release.
-      if (error) throw error;
-
-      // Don't use the connection here, it has been returned to the pool.
-    });
-  });
-  
 	let query = function( sql, values ) {  	
   		// 返回一个 Promise
 	  	return new Promise(( resolve, reject ) => {
