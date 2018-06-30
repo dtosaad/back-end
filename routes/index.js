@@ -58,17 +58,17 @@ router.get('/tables',controllers.getAllTables)
 router.get('/tables/:table_id',controllers.queryTable)
 
 // API2.1 确认参与协同点餐
-router.post('/tables/:table_id/together', controllers.orderTogether)
+router.post('/tables/:table_id/together', controllers.TogetherOrder.orderTogether)
 const oTtrigger = require('../tools/orderTogetherTrigger')
 router.get('/tables/:table_id/together', oTtrigger.trigger)
 
 // API 2.2， 上传当前已点的菜品
-router.post('/tables/:table_id/dishes', controllers.updateDish)
+router.post('/tables/:table_id/dishes', controllers.TogetherOrder.updateDish)
 const updateDishTrigger = require('../tools/updateDishTrigger')
 router.get('/tables/:table_id/dishes', updateDishTrigger) //controllers.queryOrders
 
 // API 2.4
-router.post('/orders/together', controllers.commitOrders)
+router.post('/orders/together', controllers.TogetherOrder.commitOrder)
 const commitTrigger = require('../tools/commitTrigger')
 router.get('/orders/together', commitTrigger)
 
