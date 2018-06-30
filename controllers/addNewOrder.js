@@ -2,9 +2,15 @@ query = require('./query.js')
 module.exports = async (ctx, next)=>{
 	info = ctx.request.body
 	total_price=0
+	takeout_info = info.takeout_info
+	discount_id = info.discount_id
+	note = info.note
+	dishes = info.dishes
+	user_id = info.user_id
+	dinning_choice = info.dinning_choice
 
-	for(var i = 0; i < info.dishes.length; ++i){
-		var dish = info.dishes[i]
+	for(var i = 0; i < dishes.length; ++i){
+		var dish = dishes[i]
 		dish_id = dish.dish_id
 		amount = dish.amount
 		total_price += amount * dish.price
@@ -17,11 +23,7 @@ module.exports = async (ctx, next)=>{
 		await query.query(ctx, next, sql_update, {})
 	}
 
-	user_id = info.user_id
-	dinning_choice = info.dinning_choice
-
 	//update users(if needed)
-	takeout_info = info.takeout_info
 	if(takeout_info){
 		queryObj = {}
 		queryObj.table = 'users'
@@ -39,13 +41,14 @@ module.exports = async (ctx, next)=>{
 	}
 
 	//get info of discount(if needed)
-	if(info.discount_id){
+	if(discount_id){
 		queryObj={}
 		queryObj.table='coupon'
 		queryObj.columns=['money','amount']
 		queryObj.key='discount_id'
-		queryObj.keyValue=info.discount_id
+		queryObj.keyValue=discount_id
 		discount_info = await query.query(ctx, next, '', queryObj)
+
 		discount_value = discount_info[0].money
 		discount_amount = discount_info[0].amount
 		total_price -= discount_value
@@ -54,21 +57,22 @@ module.exports = async (ctx, next)=>{
 		--discount_amount
 		sql = ''
 		if(discount_amount<=0){
-			sql = 'DELETE FROM `coupon` WHERE `discount_id`=\''+info.discount_id+'\''
+			sql = 'DELETE FROM `coupon` WHERE `discount_id`=\''+discount_id+'\''
 		}else{
-			sql = 'UPDATE `coupon` SET `amount`= \''+discount_amount+'\' WHERE `discount_id`=\''+info.discount_id+'\''
+			sql = 'UPDATE `coupon` SET `amount`= \''+discount_amount+'\' WHERE `discount_id`=\''+discount_id+'\''
 		}
+	console.log(sql)
 		await query.query(ctx, next, sql, {})
 	}
 
 	//update orders
 	sql4 = 'INSERT INTO `orders` (`user_id`, `dinning_choice`,`total_price`,`note`) VALUES (\''
-		+user_id+'\', \''+dinning_choice+'\', \''+total_price+'\', \''+info.note+'\')'
+		+user_id+'\', \''+dinning_choice+'\', \''+total_price+'\', \''+ note +'\')'
 	results = await query.query(ctx, next,sql4, {})
 	order_id = results.insertId
 	
-	for(var i = 0; i < info.dishes.length; ++i){
-		var dish = info.dishes[i]
+	for(var i = 0; i < dishes.length; ++i){
+		var dish = dishes[i]
 		dish_id = dish.dish_id
 		amount = dish.amount
 		
@@ -78,10 +82,6 @@ module.exports = async (ctx, next)=>{
 
 		await query.query(ctx, next, sql_insert_order_record, {})
 	}
-	
-
-	sql_delete = 'DELETE FROM `coupon` WHERE `discount_id`='+info.discount_id
-	await query.query(ctx, next, sql_delete, {})
 
 	// add coupon
 	new_discount_money = 0
