@@ -25,7 +25,8 @@ module.exports = async (ctx, next) => {
 	}
 	//console.log('\n\ntables_order_together:', tables_order_together,'\n\n')
 	result = []
-	for(let [dishid, dish] of tables_order_together.get(table_id)){
+	let dishes = tables_order_together.get(table_id)
+	for(let [dishid, dish] of dishes){
 		result.push(dish)
 	}
 	ctx.body = result
