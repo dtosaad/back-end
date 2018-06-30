@@ -10,8 +10,9 @@ module.exports = async (ctx, next) => {
       let user_id = ctx.request.query.user_id
       let status = parseInt(ctx.request.query.status)
       let sql_avatar = `SELECT wechat_avatar FROM users WHERE user_id=${user_id}`
-      let [user_avatar] = await await query.query(ctx,next,sql_avatar,{})
-      let sql = `UPDATE distribution SET user_id=${user_id},orderers_count=1,user_avatar=${user_avatar},status=${status} WHERE table_id=${table_id}`
+      let [{ wechat_avatar }] = await query.query(ctx,next,sql_avatar,{})
+      let sql = `UPDATE distribution SET user_id=${user_id},orderers_count=1,user_avatar="${wechat_avatar}",status=${status} WHERE table_id=${table_id}`
+      console.log(sql)
       await query.query(ctx,next,sql,{})
       setTimeout(async function(){
         let sql = `UPDATE distribution SET user_id=NULL,orderers_count=0,user_avatar=NULL,status=0 WHERE table_id=${table_id}`
