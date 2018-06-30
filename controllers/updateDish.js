@@ -1,33 +1,23 @@
 query = require('./query')
-tables_order_together = new Map()
+
+const tables_num = 28
+const dishes_num = 25
+const dishes = new Array(tables_num)
+for (let i = 0; i < tables_num; ++i) {
+	dishes[i] = new Array(dishes_num)
+	for (let j = 0; j < dishes_num; ++j) {
+		dishes[i][j] = 0
+	}
+}
 
 module.exports = async (ctx, next) => {
-	info = ctx.request.body
-	var table_id = ctx.params.table_id
-	var current_orders
-	if(tables_order_together.has(table_id)){ //桌位已经存在协同点餐
-		current_orders = tables_order_together.get(table_id)
-		for(var i=0; i<info.length; ++i){
-			if(current_orders.has(info[i].dish_id)){//此菜品已点过，检查ordered_count是否改变
-				if(info[i].ordered_count != current_orders.get(info[i].dish_id).ordered_count){
-					current_orders.get(info[i].dish_id).ordered_count = info[i].ordered_count
-				}
-			}else{
-				current_orders.set(info[i].dish_id, info[i])
-			}
-		}
-	}else{ // 桌位刚开始协同点餐
-		current_orders = new Map()
-		for(var i=0;i<info.length; ++i){
-			current_orders.set(info[i].dish_id, info[i])
-		}
-		tables_order_together.set(table_id,current_orders)
+	let delta = ctx.request.body
+	let table_id = parseInt(ctx.params.table_id)
+	let table_index = table_id - 1
+	for (let i = 0; i < dishes_num; ++i) {
+		dishes[table_index][i] += delta[i]
 	}
-	//console.log('\n\ntables_order_together:', tables_order_together,'\n\n')
-	result = []
-	let dishes = tables_order_together.get(table_id)
-	for(let [dishid, dish] of dishes){
-		result.push(dish)
-	}
-	ctx.body = result
+	console.log(delta)
+	console.log(dishes[table_index])
+	ctx.body = dishes[table_index]
 }
