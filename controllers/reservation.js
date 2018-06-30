@@ -6,36 +6,18 @@ module.exports = async (ctx, next) => {
 // 具体查看：
     queryObj = {}
     try {
-        table_id = ctx.params.table_id
-        queryObj = {}
-        try{
-            table_id = ctx.params.table_id
-            user_id = ctx.request.query.user_id
-            if(!table_id){
-                throw new Error('table_id needed!')
-            } else {
-                sql1 = 'SELECT `user_id` FROM `distribution` WHERE `table_id` ='+table_id
-                var result1 = await query.query(ctx,next,sql1,queryObj)
-                user_id0 = result1[0].user_id
-                if (!user_id0) {
-                    sql_tmp = 'SELECT `wechat_avatar` FROM `users` WHERE `user_id` ='+user_id
-                    var result2 = await query.query(ctx,next,sql_tmp,queryObj)
-                    user_avatar = result2[0].wechat_avatar
-                    sql2 = 'UPDATE `distribution` SET `user_id` = ' + user_id + ',`orderers_count` = 1, `user_avatar` = \'' + user_avatar + '\' \
-                        WHERE `table_id` ='+table_id
-                    await query.query(ctx,next,sql2,queryObj)
-                    setTimeout(async function(){
-                        sql3 = 'UPDATE `distribution` SET `user_id` = NULL WHERE `table_id` =' + table_id
-                        await query.query(ctx,next,sql3,{})
-                    },900000) 
-                } else {
-                    throw new Error('table reserved or being used!')
-                }
-            }
-        }catch(e){
-            ctx.body=e.message
-        }
-    }catch(e){
-        ctx.body=e.message
+      let table_id = ctx.params.table_id
+      let user_id = ctx.request.query.user_id
+      let status = parseInt(ctx.request.query.status)
+      let sql_avatar = `SELECT wechat_avatar FROM users WHERE user_id=${user_id}`
+      let [user_avatar] = await await query.query(ctx,next,sql_avatar,{})
+      let sql = `UPDATE distribution SET user_id=${user_id},orderers_count=1,user_avatar=${user_avatar},status=${status} WHERE table_id=${table_id}`
+      await query.query(ctx,next,sql,{})
+      setTimeout(async function(){
+        let sql = `UPDATE distribution SET user_id=NULL,orderers_count=0,user_avatar=NULL,status=0 WHERE table_id=${table_id}`
+        await query.query(ctx,next,sql,{})
+      }, 900000)
+    } catch(e) {
+      ctx.body = e.message
     }
 }
