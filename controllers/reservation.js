@@ -14,10 +14,11 @@ module.exports = async (ctx, next) => {
       let sql = `UPDATE distribution SET user_id=${user_id},orderers_count=1,user_avatar="${wechat_avatar}",status=${status} WHERE table_id=${table_id}`
       console.log(sql)
       await query.query(ctx,next,sql,{})
-      setTimeout(async function(){
+      let timeout = status === 1 ? 2*60*60*100 : 15*60*1000
+      setTimeout(async function() {
         let sql = `UPDATE distribution SET user_id=NULL,orderers_count=0,user_avatar=NULL,status=0 WHERE table_id=${table_id}`
         await query.query(ctx,next,sql,{})
-      }, 900000)
+      }, timeout)
     } catch(e) {
       ctx.body = e.message
     }
