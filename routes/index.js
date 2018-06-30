@@ -45,7 +45,7 @@ router.get('/users/:userid', controllers.getUserInfo)
 router.get('/dishes',controllers.dishes)
 
 // API 1.5， 获取每日推荐的图片链接
-router.get('/images/recommendation',controllers.images)
+router.get('/recommendation',controllers.images)
 
 // API 1.6,  新建订单
 router.post('/orders', controllers.addNewOrder)
@@ -73,13 +73,13 @@ const commitTrigger = require('../tools/commitTrigger')
 router.get('/orders/together', commitTrigger)
 
 // API 3.2， 预定桌位
-router.post('/tables/:table_id/reservation',controllers.reservation)
+router.post('/tables/:table_id', controllers.reservation)
 
 // API 3.2 取消预订
-router.delete('/tables/:table_id/reservation',controllers.cancelRes)
+router.delete('/tables/:table_id', controllers.cancelRes)
 
 //API 4.1 菜品反馈
-router.post('/dishes/:dish_id/review',controllers.review)
+router.post('/dishes/:dish_id/review', controllers.review)
 
 //API 4.2 菜品推荐
 

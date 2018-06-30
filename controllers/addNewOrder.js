@@ -89,7 +89,7 @@ module.exports = async (ctx, next)=>{
 	if(total_price >= 300){
 		new_discount_money = 30
 		flag = true
-	}else if(total_price > = 200){
+	}else if(total_price >= 200){
 		new_discount_money = 20
 		flag = true
 	}else if(total_price >= 100){
@@ -107,7 +107,7 @@ module.exports = async (ctx, next)=>{
 				+ ' WHERE `discount_id`=' + coupon_info[0].discount_id
 		}else{
 			sql_coupon = 'INSERT INTO `coupon` (`user_id`, `money`,`amount`) VALUES (\''
-				+user_id+'\', \''+dinning_choice+'\', \''+total_price'\')'
+				+user_id+'\', \''+dinning_choice+'\', \''+total_price + '\')'
 		}
 		await query.query(ctx, next, sql_coupon, {})
 	}
