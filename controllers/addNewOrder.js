@@ -103,7 +103,7 @@ module.exports = async (ctx, next)=>{
 			coupon_info = await query.query(ctx, next, sql_select_coupon, {})
 
 			let sql_coupon
-			if(coupon_info){
+			if(coupon_info && coupon_info.length){
 				if(coupon_info[0].amount){
 					sql_coupon = 'UPDATE `coupon` SET `amount`= ' + (coupon_info[0].amount+1)
 					+ ' WHERE `discount_id`=' + coupon_info[0].discount_id
