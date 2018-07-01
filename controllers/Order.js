@@ -2,13 +2,13 @@ query = require('./query.js')
 
 async function create(ctx, next) {
 	try{
+		let user_id = parseInt(ctx.request.query.user_id)
 		info = ctx.request.body
 		total_price = 0
 		takeout_info = info.takeout_info
 		discount_id = info.discount_id
 		note = info.note
 		dishes = info.dishes
-		user_id = info.user_id
 		dinning_choice = info.dinning_choice
 
 		for(var i = 0; i < dishes.length; ++i){
@@ -145,7 +145,7 @@ async function addDishes(ctx, next) {
 		}
 		let update_sql = `UPDATE order_record SET amount=${new_amount} WHERE od_id=${or.od_id}`
 		await query.query(ctx, next, update_sql, {})
-		money += dish.money * dish.amount
+		money += dish.price * dish.amount
 	}
 	let sql = `SELECT * FROM orders WHERE order_id=${order_id}`
 	let [{ total_price }] = await query.query(ctx, next, sql, {})

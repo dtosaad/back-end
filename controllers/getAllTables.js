@@ -14,7 +14,7 @@ module.exports = async (ctx, next) => {
 		    queryObj.columns = ['table_id','number','user_id','user_avatar']
 			queryObj.table = 'distribution'
 			queryObj.key = 'table_id'
-			queryObj.keyValue = userid
+			queryObj.keyValue = user_id
 		}
 		var results = await query.query(ctx,next,queryString, queryObj)
         ctx.body = results

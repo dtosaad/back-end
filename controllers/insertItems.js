@@ -16,7 +16,7 @@ module.exports = async (ctx, next)=>{
 		await query.query(ctx, next,sql2, queryObj)
 	}
 
-	user_id = info.user_id
+	let user_id = parseInt(ctx.request.query.user_id)
 	dinning_choice = info.dinning_choice
 
 	//update orders

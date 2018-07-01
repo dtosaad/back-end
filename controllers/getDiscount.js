@@ -2,7 +2,7 @@ query = require('./query')
 
 module.exports = async(ctx, next)=>{
 	try{
-		user_id = ctx.request.query.userid
+		user_id = ctx.request.query.user_id
 		if(!user_id){
 			throw new Error('user_id needed!')
 		}

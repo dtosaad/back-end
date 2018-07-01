@@ -12,8 +12,6 @@ for (let i = 0; i < tables_num; ++i) {
 	}
 }
 
-
-
 async function gether(ctx, next) {
 	let user_id = parseInt(ctx.request.query.user_id)
 	let table_id = parseInt(ctx.params.table_id)
@@ -65,7 +63,6 @@ async function pay(ctx, next) {
 }
 
 exports = module.exports = {
-	reserve,
 	gether,
 	update,
 	commit,

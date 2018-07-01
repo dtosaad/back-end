@@ -36,7 +36,7 @@ router.post('/message', controllers.message.post)
 router.post('/users/signin',controllers.getUserid)
 
 // API 1.2 获取用户信息
-router.get('/users/:userid', controllers.getUserInfo)
+router.get('/users/:user_id', controllers.getUserInfo)
 
 // API 1.3 & 1.4 获取所有菜品列表、获取用户吃过的菜品列表
 router.get('/dishes',controllers.dishes)
@@ -52,7 +52,7 @@ router.post('/orders/:order_id/pay', controllers.Order.pay)  // 普通
 router.post('/orders/:order_id/pay/together', controllers.TogetherOrder.pay)  // 协同
 router.post('/tables/:table_id/together', controllers.TogetherOrder.gether)
 router.post('/tables/:table_id/dishes', controllers.TogetherOrder.update)
-router.post('/orders/together', controllers.TogetherOrder.commit)
+router.post('/tables/:table_id/commit', controllers.TogetherOrder.commit)
 
 // ======================
 
