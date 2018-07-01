@@ -9,12 +9,12 @@ module.exports = async (ctx, next)=>{
 			if(!dish_id){
 				throw new Error('dish_id needed!')
 			} else {
-				let sql1 = `SELECT star_times,star_count FROM dishes WHERE dish_id=${dish_id}`
+				let sql1 = `SELECT star_times,star_count FROM dish WHERE dish_id=${dish_id}`
 				let result1 = await query.query(ctx,next,sql1,{})
 				let star_count = result1[0].star_count+star
 				let star_times = result1[0].star_times+1
         console.log(dish_id,star_times,star_count)
-				let sq12 = `UPDATE dishes SET star_times=${star_times}, star_count=${star_count} WHERE dish_id = ${dish_id}`
+				let sq12 = `UPDATE dish SET star_times=${star_times}, star_count=${star_count} WHERE dish_id = ${dish_id}`
 				await query.query(ctx,next,sql2,{})
 			}
         }catch(e){

@@ -33,13 +33,14 @@ router.post('/message', controllers.message.post)
 /*=========== APIs ===========*/
 
 // API 1.1,用户登录
-router.post('/users/signin',controllers.getUserid)
+router.post('/users/signin', controllers.getUserid)
 
 // API 1.2 获取用户信息
 router.get('/users/:user_id', controllers.getUserInfo)
 
 // API 1.3 & 1.4 获取所有菜品列表、获取用户吃过的菜品列表
-router.get('/dishes',controllers.dishes)
+router.get('/dishes/all', controllers.Dish.all)
+router.get('/dishes', controllers.Dish.mine)
 
 // API 1.5 获取每日推荐的图片链接
 router.get('/recommendation',controllers.images)
@@ -53,6 +54,8 @@ router.post('/orders/:order_id/pay/together', controllers.TogetherOrder.pay)  //
 router.post('/tables/:table_id/together', controllers.TogetherOrder.gether)
 router.post('/tables/:table_id/dishes', controllers.TogetherOrder.update)
 router.post('/tables/:table_id/commit', controllers.TogetherOrder.commit)
+
+router.get('/orders/:order_id', controllers.Order.get)
 
 // ======================
 
@@ -69,6 +72,5 @@ router.post('/dishes/:dish_id/review', controllers.review)
 
 // API 4.3.1 抵用券
 router.get('/discounts', controllers.getDiscount)
-
 
 module.exports = router

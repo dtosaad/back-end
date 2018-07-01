@@ -9,10 +9,10 @@ module.exports = async (ctx, next) => {
 		var queryObj = {}
 		var queryString
 		if (!table_id) {
-			queryString = 'SELECT `*` FROM distribution'
+			queryString = 'SELECT `*` FROM table'
 		} else {
 		    queryObj.columns = ['table_id','number','user_id','user_avatar']
-			queryObj.table = 'distribution'
+			queryObj.table = 'table'
 			queryObj.key = 'table_id'
 			queryObj.keyValue = user_id
 		}

@@ -3,7 +3,7 @@ module.exports = async (ctx, next) => {
         let user_id = ctx.params.user_id
         var queryObj = {}
         queryObj.columns = ['wechat_name','phone','location']
-        queryObj.table = 'users'
+        queryObj.table = 'user'
         queryObj.key = 'user_id'
         queryObj.keyValue = user_id
         var querystring

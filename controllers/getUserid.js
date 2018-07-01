@@ -1,6 +1,7 @@
 query = require('./query')
 config = require('../config')
 axios = require('axios')
+request = require('request')
 
 module.exports = async (ctx,next)=>{
     let getOpenId = function (id, secret, code) {
@@ -37,7 +38,7 @@ module.exports = async (ctx,next)=>{
         var openid = JSON.parse(result.body).openid
         queryObj = {}
         queryObj.columns = 'user_id'
-        queryObj.table = 'users'
+        queryObj.table = 'user'
         queryObj.key = 'openid'
         queryObj.keyValue = openid
         var results = await query.query(ctx, next, '', queryObj)
@@ -45,12 +46,12 @@ module.exports = async (ctx,next)=>{
         if(!results || !results.length){
             querystring=''
             if(openid){
-                querystring = 'INSERT INTO `users` (`wechat_name`, `wechat_avatar`, `openid`) VALUES (\''
+                querystring = 'INSERT INTO `user` (`wechat_name`, `wechat_avatar`, `openid`) VALUES (\''
                 +wechat_name+'\',\''+wechat_avatar+'\',\''+openid+'\')'
                 results_insert = await query.query(ctx, next, querystring, {})
                 user_id = results_insert.insertId
             }else{
-                querystring = 'INSERT INTO `users` (`wechat_name`, `wechat_avatar`) VALUES (\''
+                querystring = 'INSERT INTO `user` (`wechat_name`, `wechat_avatar`) VALUES (\''
                 +wechat_name+'\',\''+wechat_avatar+'\')'
             }
             

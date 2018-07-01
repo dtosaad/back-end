@@ -17,9 +17,9 @@ async function gether(ctx, next) {
 	let table_id = parseInt(ctx.params.table_id)
 	let table_index = table_id - 1
 	if (!orderers[table_index].has(user_id)) {
-		let sql = `SELECT orderers_count, orderers_total FROM distribution WHERE table_id=${table_id}`
+		let sql = `SELECT orderers_count, orderers_total FROM table WHERE table_id=${table_id}`
 		let [{ orderers_count, orderers_total }] = await query.query(ctx, next, sql, {})
-		let update_sql = `UPDATE distribution SET orderers_count=${orderers_count+1},orderers_total=${orderers_total+1} WHERE table_id=${table_id}`
+		let update_sql = `UPDATE table SET orderers_count=${orderers_count+1},orderers_total=${orderers_total+1} WHERE table_id=${table_id}`
 		await query.query(ctx, next, update_sql, {})
 	}
 	console.log('dishes', dishes[table_index])
@@ -45,7 +45,7 @@ async function commit(ctx, next) {
 	let table_index = table_id - 1
 	orderers[table_index].delete(user_id)
 	let orderers_count = orderers[table_index].size
-	let update_sql = `UPDATE distribution SET orderers_count=${orderers[table_index].size} WHERE table_id=${table_id}`
+	let update_sql = `UPDATE table SET orderers_count=${orderers[table_index].size} WHERE table_id=${table_id}`
 	await query.query(ctx, next, update_sql, {})
 	console.log('dishes', dishes[table_index])
 	console.log('orderers', orderers[table_index])
