@@ -14,7 +14,6 @@ const { auth: { authorizationMiddleware, validationMiddleware } } = require('../
 // 登录接口
 router.get('/login', authorizationMiddleware, controllers.login)
  
-
 // --- 图片上传 Demo --- //
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
 router.post('/upload', controllers.upload)
@@ -30,64 +29,46 @@ router.post('/tunnel', controllers.tunnel.post)
 router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
-//test
-router.get('/hello',controllers.hello)
+
 /*=========== APIs ===========*/
+
 // API 1.1,用户登录
 router.post('/users/signin',controllers.getUserid)
-const sendCode = require('../tools/sendCode')
-router.get('/users/signin',sendCode.sendCode)
 
-// API 1.2, 获取用户信息
+// API 1.2 获取用户信息
 router.get('/users/:userid', controllers.getUserInfo)
 
-// API 1.3、1.4，获取所有菜品列表、获取用户吃过的菜品列表
+// API 1.3 & 1.4 获取所有菜品列表、获取用户吃过的菜品列表
 router.get('/dishes',controllers.dishes)
 
-// API 1.5， 获取每日推荐的图片链接
+// API 1.5 获取每日推荐的图片链接
 router.get('/recommendation',controllers.images)
 
-// API 1.6,  新建订单
-router.post('/orders', controllers.addNewOrder)
-const sendOrderData = require('../tools/sendOrderData')
-router.get('/orders',sendOrderData)
+// ====================== 2018.06.30 更新
 
-// API 2.1， 获取桌子信息
+router.post('/orders', controllers.Order.create)  // 普通&协同
+router.put('/orders/:order_id', controllers.Order.addDishes)  // 普通&协同
+router.post('/orders/:order_id/pay', controllers.Order.pay)  // 普通
+router.post('/orders/:order_id/pay/together', controllers.TogetherOrder.pay)  // 协同
+router.post('/tables/:table_id/together', controllers.TogetherOrder.gether)
+router.post('/tables/:table_id/dishes', controllers.TogetherOrder.update)
+router.post('/orders/together', controllers.TogetherOrder.commit)
+
+// ======================
+
+// API 2.1 获取桌子信息
 router.get('/tables',controllers.getAllTables)
-//API 2.1， 获取桌子信息
 router.get('/tables/:table_id',controllers.queryTable)
 
-// API2.1 确认参与协同点餐
-router.post('/tables/:table_id/together', controllers.TogetherOrder.orderTogether)
-const oTtrigger = require('../tools/orderTogetherTrigger')
-router.get('/tables/:table_id/together', oTtrigger.trigger)
+// API 3.2 坐下/预定桌位
+router.post('/tables/:table_id', controllers.Table.take)
+router.delete('/tables/:table_id', controllers.Table.leave)
 
-// API 2.2， 上传当前已点的菜品
-router.post('/tables/:table_id/dishes', controllers.TogetherOrder.updateDish)
-const updateDishTrigger = require('../tools/updateDishTrigger')
-router.get('/tables/:table_id/dishes', updateDishTrigger) //controllers.queryOrders
-
-// API 2.4
-router.post('/orders/together', controllers.TogetherOrder.commitOrder)
-const commitTrigger = require('../tools/commitTrigger')
-router.get('/orders/together', commitTrigger)
-
-// API 3.2， 预定桌位
-router.post('/tables/:table_id', controllers.TogetherOrder.reservation)
-
-// API 3.2 取消预订
-router.delete('/tables/:table_id', controllers.cancelRes)
-
-//API 4.1 菜品反馈
+// API 4.1 菜品反馈
 router.post('/dishes/:dish_id/review', controllers.review)
 
-//API 4.2 菜品推荐
-
-//API 4.3.1 获取用户当前的抵用券
+// API 4.3.1 抵用券
 router.get('/discounts', controllers.getDiscount)
 
-// API 4.3.2，使用抵用券，修改API 1.6
-
-// API4.4 外卖
 
 module.exports = router

@@ -1,5 +1,6 @@
 query = require('./query.js')
-module.exports = async (ctx, next)=>{
+
+async function create(ctx, next) {
 	try{
 		info = ctx.request.body
 		total_price = 0
@@ -70,7 +71,7 @@ module.exports = async (ctx, next)=>{
 		sql4 = 'INSERT INTO `orders` (`user_id`, `dinning_choice`,`total_price`,`note`) VALUES (\''
 			+user_id+'\', \''+dinning_choice+'\', \''+total_price+'\', \''+ note +'\')'
 		results = await query.query(ctx, next,sql4, {})
-		order_id = results.insertId
+		let order_id = results.insertId
 		
 		for(var i = 0; i < dishes.length; ++i){
 			var dish = dishes[i]
@@ -117,8 +118,54 @@ module.exports = async (ctx, next)=>{
 			}
 			await query.query(ctx, next, sql_coupon, {})
 		}
+
+		// 更新 table 中的 order_id
+		let { table_id } = ctx.request.body
+		let table_sql = `UPDATE distribution SET order_id=${order_id} WHERE table_id=${table_id}`
+		await query.query(ctx, next, table_sql, {})
+
+		ctx.body = { order_id }
 	}
 	catch(e){
 		ctx.body = e.message
 	}
+}
+
+async function addDishes(ctx, next) {
+	let order_id = parseInt(ctx.params.order_id)
+	let user_id = parseInt(ctx.request.query.user_id)
+	let new_dishes = ctx.request.body
+	let money = 0.00
+	for (let dish of new_dishes) {
+		let sql = `SELECT * FROM order_record WHERE order_id=${order_id} AND dish_id=${dish.dish_id}`
+		let [or] = await query.query(ctx, next, sql, {})
+		let new_amount = 0
+		if (old_dish) {
+			new_amount = or.amount + dish.amount
+		}
+		let update_sql = `UPDATE order_record SET amount=${new_amount} WHERE od_id=${or.od_id}`
+		await query.query(ctx, next, update_sql, {})
+		money += dish.money * dish.amount
+	}
+	let sql = `SELECT * FROM orders WHERE order_id=${order_id}`
+	let [{ total_price }] = await query.query(ctx, next, sql, {})
+	let update_sql = `UPDATE orders SET total_price=${total_price+money} WHERE order_id=${order_id}`
+	await query.query(ctx, next, update_sql, {})
+}
+
+async function pay(ctx, next) {
+	let user_id = parseInt(ctx.request.query.user_id)
+	let order_id = parseInt(ctx.params.order_id)
+	let table_id = ctx.request.body.table_id
+	let update_order_sql = `UPDATE orders SET user_id=${user_id} WHERE order_id=${order_id}`
+	await query.query(ctx, next, update_order_sql, {})
+	let update_table_sql = `UPDATE distribution SET user_id=NULL,orderers_count=0,orderers_total=0,user_avatar=NULL,status=0,order_id=NULL WHERE table_id=${table_id}`
+	await query.query(ctx, next, update_table_sql, {})
+	return next()
+}
+
+exports = module.exports = {
+	create,
+	addDishes,
+	pay,
 }
