@@ -12,6 +12,11 @@ for (let i = 0; i < tables_num; ++i) {
 	}
 }
 
+function add(table_id, user_id) {
+	let table_index = table_id - 1
+	orderers[table_index].add(user_id)
+}
+
 async function gether(ctx, next) {
 	let user_id = parseInt(ctx.request.query.user_id)
 	let table_id = parseInt(ctx.params.table_id)
@@ -21,6 +26,7 @@ async function gether(ctx, next) {
 		let [{ orderers_count, orderers_total }] = await query.query(ctx, next, sql, {})
 		let update_sql = `UPDATE \`table\` SET orderers_count=${orderers_count+1},orderers_total=${orderers_total+1} WHERE table_id=${table_id}`
 		await query.query(ctx, next, update_sql, {})
+		orderers[table_index].add(user_id)
 	}
 	console.log('dishes', dishes[table_index])
 	console.log('orderers', orderers[table_index])
@@ -63,6 +69,7 @@ async function pay(ctx, next) {
 }
 
 exports = module.exports = {
+	add,
 	gether,
 	update,
 	commit,
