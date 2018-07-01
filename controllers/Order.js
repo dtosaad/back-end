@@ -147,10 +147,10 @@ async function addDishes(ctx, next) {
 	let money = 0.00
 	for (let dish of new_dishes) {
 		let sql = `SELECT * FROM order_dish WHERE order_id=${order_id} AND dish_id=${dish.dish_id}`
-		let [old_dish] = await query.query(ctx, next, sql, {})
-		if (old_dish) {
-			let new_amount = old_dish. + dish.amount
-			let sql = `UPDATE order_dish SET amount=${new_amount} WHERE od_id=${old_dish.od_id}`
+		let [od] = await query.query(ctx, next, sql, {})
+		if (od) {
+			let new_amount = od.amount + dish.amount
+			let sql = `UPDATE order_dish SET amount=${new_amount} WHERE od_id=${od.od_id}`
 			await query.query(ctx, next, sql, {})
 		} else {
 			let sql = `INSERT INTO order_dish (order_id,dish_id,amount) VALUES (${order_id},${dish.dish_id},${dish.amount})`
