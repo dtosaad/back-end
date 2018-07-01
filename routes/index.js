@@ -55,13 +55,13 @@ router.post('/tables/:table_id/together', controllers.TogetherOrder.gether)
 router.post('/tables/:table_id/dishes', controllers.TogetherOrder.update)
 router.post('/tables/:table_id/commit', controllers.TogetherOrder.commit)
 
-router.get('/orders/:order_id', controllers.Order.get)
+router.get('/orders/:order_id', controllers.Order.one)
 
 // ======================
 
 // API 2.1 获取桌子信息
-router.get('/tables',controllers.getAllTables)
-router.get('/tables/:table_id',controllers.queryTable)
+router.get('/tables/all', controllers.Table.all)
+router.get('/tables/:table_id', controllers.Table.one)
 
 // API 3.2 坐下/预定桌位
 router.post('/tables/:table_id', controllers.Table.take)

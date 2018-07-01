@@ -1,8 +1,8 @@
 query = require('./query.js')
 
-async function get(ctx, next) {
+async function one(ctx, next) {
 	let order_id = parseInt(ctx.params.order_id)
-	let sql = `SELECT * FROM order WHERE order_id=${order_id}`
+	let sql = `SELECT * FROM \`order\` WHERE order_id=${order_id}`
 	let [order] = await query.query(ctx, next, sql, {})
 	let dish_sql = `SELECT dish_id,amount FROM order_dish WHERE order_id=${order_id}`
 	order.dishes = await query.query(ctx, next, dish_sql, {})
@@ -130,7 +130,7 @@ async function create(ctx, next) {
 
 		// 更新 table 中的 order_id
 		let { table_id } = ctx.request.body
-		let table_sql = `UPDATE table SET order_id=${order_id} WHERE table_id=${table_id}`
+		let table_sql = `UPDATE \`table\` SET order_id=${order_id} WHERE table_id=${table_id}`
 		await query.query(ctx, next, table_sql, {})
 
 		ctx.body = { order_id }
@@ -158,9 +158,9 @@ async function addDishes(ctx, next) {
 		}
 		money += dish.price * dish.amount
 	}
-	let sql = `SELECT * FROM order WHERE order_id=${order_id}`
+	let sql = `SELECT * FROM \`order\` WHERE order_id=${order_id}`
 	let [{ total_price }] = await query.query(ctx, next, sql, {})
-	let update_sql = `UPDATE order SET total_price=${total_price+money} WHERE order_id=${order_id}`
+	let update_sql = `UPDATE \`order\` SET total_price=${total_price+money} WHERE order_id=${order_id}`
 	await query.query(ctx, next, update_sql, {})
 }
 
@@ -168,15 +168,15 @@ async function pay(ctx, next) {
 	let user_id = parseInt(ctx.request.query.user_id)
 	let order_id = parseInt(ctx.params.order_id)
 	let table_id = ctx.request.body.table_id
-	let update_order_sql = `UPDATE order SET user_id=${user_id} WHERE order_id=${order_id}`
+	let update_order_sql = `UPDATE \`order\` SET user_id=${user_id} WHERE order_id=${order_id}`
 	await query.query(ctx, next, update_order_sql, {})
-	let update_table_sql = `UPDATE table SET user_id=NULL,orderers_count=0,orderers_total=0,user_avatar=NULL,status=0,order_id=NULL WHERE table_id=${table_id}`
+	let update_table_sql = `UPDATE \`table\` SET user_id=NULL,orderers_count=0,orderers_total=0,user_avatar=NULL,status=0,order_id=NULL WHERE table_id=${table_id}`
 	await query.query(ctx, next, update_table_sql, {})
 	return next()
 }
 
 exports = module.exports = {
-	get,
+	one,
 	create,
 	addDishes,
 	pay,
