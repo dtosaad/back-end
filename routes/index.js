@@ -73,7 +73,7 @@ const commitTrigger = require('../tools/commitTrigger')
 router.get('/orders/together', commitTrigger)
 
 // API 3.2， 预定桌位
-router.post('/tables/:table_id', controllers.reservation)
+router.post('/tables/:table_id', controllers.TogetherOrder.reservation)
 
 // API 3.2 取消预订
 router.delete('/tables/:table_id', controllers.cancelRes)
