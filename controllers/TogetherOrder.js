@@ -17,6 +17,12 @@ function add(table_id, user_id) {
 	orderers[table_index].add(user_id)
 }
 
+function leave_table(table_id) {
+	let table_index = table_id - 1;
+	dishes[table_index] = new Array(dishes_num)
+	orderers[table_index] = new Set()
+}
+
 async function gether(ctx, next) {
 	let user_id = parseInt(ctx.request.query.user_id)
 	let table_id = parseInt(ctx.params.table_id)
@@ -70,6 +76,7 @@ async function pay(ctx, next) {
 
 exports = module.exports = {
 	add,
+	leave_table,
 	gether,
 	update,
 	commit,

@@ -28,7 +28,8 @@ async function take(ctx, next) {
 async function leave(ctx, next) {
   let table_id = ctx.params.table_id
   let sql = `UPDATE \`table\` SET user_id=NULL,status=0,user_avatar=NULL,orderers_count=0,orderers_total=0 WHERE table_id=${table_id}`
-  await query.query(ctx, next, sql, {})
+	await query.query(ctx, next, sql, {})
+	require('./TogetherOrder').clear_table(table_id);
 }
 
 exports = module.exports = {
