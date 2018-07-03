@@ -11,7 +11,7 @@ module.exports = async (ctx, next) => {
 		if(!table_id){
 			throw new Error('table_id needed!')
 		} else {
-			let sql = `UPDATE distribution SET user_id=NULL,status=0,user_avatar=NULL,orderers_count=0 WHERE table_id=${table_id}`
+			let sql = `UPDATE \`table\` SET user_id=NULL,status=0,user_avatar=NULL,orderers_count=0 WHERE table_id=${table_id}`
 			console.log(sql)
 			await query.query(ctx,next,sql,queryObj)
 		}

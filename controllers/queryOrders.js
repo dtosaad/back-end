@@ -14,7 +14,7 @@ module.exports = async (ctx, next)=>{
 		var orders = await query.query(ctx, next, '', queryObj)
 
 		queryObj.columns = 'dish_name'
-		queryObj.table = 'dishes'
+		queryObj.table = 'dish'
 		queryObj.key = 'dish_id'
 		var results = []
 		for(var i = 0; i < orders.length; ++i){

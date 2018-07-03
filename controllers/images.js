@@ -1,9 +1,9 @@
 module.exports = async (ctx, next) => {
     let number = ctx.request.query.number;
-    let result = [];
-    for (let i = 1; i <= number; ++i) {
-        result.push(`images/dishes/${i}.jpeg`);
-    }
-    console.log(result);
+    let result = [
+        'images/dishes/5.jpeg',
+        'images/dishes/6.jpeg',
+        'images/dishes/13.jpeg'
+    ];
     ctx.body = result;
 }
